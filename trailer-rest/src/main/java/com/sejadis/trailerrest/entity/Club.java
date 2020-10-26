@@ -1,6 +1,7 @@
 package com.sejadis.trailerrest.entity;
 
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonIdentityReference;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 import javax.persistence.*;
@@ -14,20 +15,30 @@ public class Club {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
+
     @Column(nullable = false)
     private String name;
+
     @ManyToMany
     @JoinTable(name = "club_owner",
             joinColumns = @JoinColumn(name = "club_id", referencedColumnName = "id"),
             inverseJoinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"))
+    @JsonIdentityReference(alwaysAsId = true)
     private Set<User> owners;
+
     @ManyToMany
     @JoinTable(name = "club_member",
             joinColumns = @JoinColumn(name = "club_id", referencedColumnName = "id"),
             inverseJoinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"))
+    @JsonIdentityReference(alwaysAsId = true)
     private Set<User> members;
-    @OneToMany(mappedBy = "club")
+
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "club")
     private Set<Trailer> trailers;
+
+    @OneToMany(cascade = CascadeType.ALL,mappedBy = "club")
+    @JsonIdentityReference(alwaysAsId = true)
+    private Set<Event> events;
 
     public Set<User> getMembers() {
         return members;
@@ -36,9 +47,6 @@ public class Club {
     public void setMembers(Set<User> members) {
         this.members = members;
     }
-
-    @OneToMany(mappedBy = "club")
-    private Set<Event> events;
 
     public Set<Trailer> getTrailers() {
         return trailers;

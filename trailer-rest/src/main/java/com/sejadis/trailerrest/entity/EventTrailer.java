@@ -1,8 +1,15 @@
 package com.sejadis.trailerrest.entity;
 
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonIdentityReference;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+
 import javax.persistence.*;
 
+@JsonIdentityInfo(
+        generator = ObjectIdGenerators.PropertyGenerator.class,
+        property = "id")
 @Entity
 public class EventTrailer {
 
@@ -20,8 +27,49 @@ public class EventTrailer {
     Trailer trailer;
 
     @ManyToOne(fetch = FetchType.LAZY)
+    @JsonIdentityReference(alwaysAsId = true)
     private User bringUser;
     @ManyToOne(fetch = FetchType.LAZY)
+    @JsonIdentityReference(alwaysAsId = true)
     private User returnUser;
 
+    public EventTrailerKey getId() {
+        return id;
+    }
+
+    public void setId(EventTrailerKey id) {
+        this.id = id;
+    }
+
+    public Event getEvent() {
+        return event;
+    }
+
+    public void setEvent(Event event) {
+        this.event = event;
+    }
+
+    public Trailer getTrailer() {
+        return trailer;
+    }
+
+    public void setTrailer(Trailer trailer) {
+        this.trailer = trailer;
+    }
+
+    public User getBringUser() {
+        return bringUser;
+    }
+
+    public void setBringUser(User bringUser) {
+        this.bringUser = bringUser;
+    }
+
+    public User getReturnUser() {
+        return returnUser;
+    }
+
+    public void setReturnUser(User returnUser) {
+        this.returnUser = returnUser;
+    }
 }

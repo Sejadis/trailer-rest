@@ -1,8 +1,10 @@
 package com.sejadis.trailerrest.entity;
 
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonIdentityReference;
+import com.fasterxml.jackson.annotation.JsonView;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
-import org.springframework.boot.autoconfigure.security.SecurityProperties;
+import com.sejadis.trailerrest.model.View;
 
 import javax.persistence.*;
 import java.util.Date;
@@ -14,18 +16,29 @@ import java.util.Set;
 @Entity
 public class Event {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.AUTO)
+//    @JsonView(View.Internal.class)
     private long id;
+
     @Column(nullable = false)
+//    @JsonView(View.Public.class)
     private String name;
+//    @JsonView(View.Public.class)
     private Date date;
-    @ManyToOne(fetch = FetchType.LAZY,optional = false)
+
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JsonIdentityReference(alwaysAsId = true)
+//    @JsonView(View.Public.class)
     private Club club;
+
     @ManyToMany
     @JoinTable(name = "event_participant",
-    joinColumns = @JoinColumn(name = "event_id", referencedColumnName = "id"),
-    inverseJoinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"))
+            joinColumns = @JoinColumn(name = "event_id", referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"))
     private Set<User> users;
+
+    public Event() {
+    }
 
     public Set<User> getUsers() {
         return users;
@@ -39,6 +52,10 @@ public class Event {
         return id;
     }
 
+    public void setId(long id) {
+        this.id = id;
+    }
+
     public Club getClub() {
         return club;
     }
@@ -47,9 +64,6 @@ public class Event {
         this.club = club;
     }
 
-    public void setId(long id) {
-        this.id = id;
-    }
 
     public String getName() {
         return name;

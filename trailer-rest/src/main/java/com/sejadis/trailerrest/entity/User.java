@@ -1,6 +1,7 @@
 package com.sejadis.trailerrest.entity;
 
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonIdentityReference;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 import javax.persistence.*;
@@ -16,27 +17,44 @@ public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
+
     @Column(nullable = false)
     private String username;
+
     @Column(nullable = false)
     private String password;
     private String email;
+
     @Column(nullable = false)
     @Temporal(TemporalType.TIMESTAMP)
     private Date create_time;
+
     @ManyToMany(mappedBy = "owners")
+    @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
+    @JsonIdentityReference(alwaysAsId = true)
     private Set<Club> administratingClubs;
+
     @ManyToMany(mappedBy = "members")
+    @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
+    @JsonIdentityReference(alwaysAsId = true)
     private Set<Club> memberships;
+
     @ManyToMany(mappedBy = "users")
+    @JsonIdentityReference(alwaysAsId = true)
     private Set<Event> events;
+
     @OneToMany(mappedBy = "bringUser")
+    @JsonIdentityReference(alwaysAsId = true)
     private Set<EventTrailer> bringTrailers;
+
+
     @OneToMany(mappedBy = "returnUser")
+    @JsonIdentityReference(alwaysAsId = true)
     private Set<EventTrailer> returnTrailers;
 
     public User() {
     }
+
     public User(String username, String password) {
         this(username, password, "");
     }
@@ -110,5 +128,21 @@ public class User {
 
     public void setCreate_time(Date create_time) {
         this.create_time = create_time;
+    }
+
+    public Set<EventTrailer> getBringTrailers() {
+        return bringTrailers;
+    }
+
+    public void setBringTrailers(Set<EventTrailer> bringTrailers) {
+        this.bringTrailers = bringTrailers;
+    }
+
+    public Set<EventTrailer> getReturnTrailers() {
+        return returnTrailers;
+    }
+
+    public void setReturnTrailers(Set<EventTrailer> returnTrailers) {
+        this.returnTrailers = returnTrailers;
     }
 }
