@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.Optional;
 @RestController
+@CrossOrigin
 public class UserController {
 
     @Autowired
@@ -28,5 +29,11 @@ public class UserController {
     public @ResponseBody
     Optional<User> getUserById(@PathVariable long id) {
         return userRepository.findById(id);
+    }
+
+    @DeleteMapping("/users/{id}")
+    public void deleteUserById(@PathVariable long id) {
+        System.out.println("received delete on users with id: " + id);
+        userRepository.deleteById(id);
     }
 }
