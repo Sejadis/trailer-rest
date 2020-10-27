@@ -35,6 +35,7 @@ public class Event {
     @JoinTable(name = "event_participant",
             joinColumns = @JoinColumn(name = "event_id", referencedColumnName = "id"),
             inverseJoinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"))
+    @JsonIdentityReference(alwaysAsId = true)
     private Set<User> users;
 
     public Event() {
