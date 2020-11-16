@@ -2,13 +2,10 @@ package com.sejadis.trailerrest.entity;
 
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonIdentityReference;
-import com.fasterxml.jackson.annotation.JsonView;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
-import com.sejadis.trailerrest.model.View;
 
 import javax.persistence.*;
-import java.util.Date;
-import java.util.Set;
+import java.util.*;
 
 @JsonIdentityInfo(
         generator = ObjectIdGenerators.PropertyGenerator.class,
@@ -23,7 +20,7 @@ public class Event {
     @Column(nullable = false)
 //    @JsonView(View.Public.class)
     private String name;
-//    @JsonView(View.Public.class)
+    //    @JsonView(View.Public.class)
     private Date date;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
@@ -38,7 +35,19 @@ public class Event {
     @JsonIdentityReference(alwaysAsId = true)
     private Set<User> users;
 
+    @OneToMany(mappedBy = "event")
+    @JsonIdentityReference(alwaysAsId = true)
+    private Set<EventTrailer> trailers = new HashSet<>();
+
     public Event() {
+    }
+
+    public Set<EventTrailer> getTrailers() {
+        return trailers;
+    }
+
+    public void setTrailers(Set<EventTrailer> eventTrailers) {
+        this.trailers = eventTrailers;
     }
 
     public Set<User> getUsers() {

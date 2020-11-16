@@ -3,28 +3,32 @@ package com.sejadis.trailerrest.entity;
 
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonIdentityReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 import javax.persistence.*;
 
-@JsonIdentityInfo(
-        generator = ObjectIdGenerators.PropertyGenerator.class,
-        property = "id")
 @Entity
+//@IdClass(EventTrailerKey.class)
 public class EventTrailer {
 
     @EmbeddedId
+    @JsonIgnore
     EventTrailerKey id;
 
+//    @Id
     @ManyToOne
     @MapsId("eventId")
-    @JoinColumn(name = "event_id")
-    Event event;
+    @JoinColumn(name = "event_id", referencedColumnName = "id")
+    @JsonIdentityReference(alwaysAsId = true)
+    private Event event;
 
+//    @Id
     @ManyToOne
     @MapsId("trailerId")
-    @JoinColumn(name = "trailer_id")
-    Trailer trailer;
+    @JoinColumn(name = "trailer_id",  referencedColumnName = "id")
+    @JsonIdentityReference(alwaysAsId = true)
+    private Trailer trailer;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JsonIdentityReference(alwaysAsId = true)
