@@ -30,9 +30,7 @@ public class ClubController {
 
     @GetMapping("/clubs")
     public @ResponseBody
-    Iterable<Club> getClubs() {
-        return clubRepository.findAll();
-    }
+    Iterable<Club> getClubs() { return clubRepository.findAll(); }
 
     @GetMapping("/clubs/{id}")
     public @ResponseBody

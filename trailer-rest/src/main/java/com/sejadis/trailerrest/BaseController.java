@@ -1,4 +1,4 @@
-package com.sejadis.trailerrest.controller;
+package com.sejadis.trailerrest;
 
 import com.sejadis.trailerrest.repository.ClubRepository;
 import org.springframework.beans.factory.annotation.Autowired;

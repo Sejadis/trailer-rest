@@ -35,7 +35,7 @@ public class Event {
     @JsonIdentityReference(alwaysAsId = true)
     private Set<User> users;
 
-    @OneToMany(mappedBy = "event")
+    @OneToMany(cascade = CascadeType.ALL,mappedBy = "event")
     @JsonIdentityReference(alwaysAsId = true)
     private Set<EventTrailer> trailers = new HashSet<>();
 

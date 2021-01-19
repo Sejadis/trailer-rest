@@ -1,5 +1,6 @@
 package com.sejadis.trailerrest.controller;
 
+import com.fasterxml.jackson.databind.JsonNode;
 import com.sejadis.trailerrest.entity.User;
 import com.sejadis.trailerrest.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,7 +16,9 @@ public class UserController {
 
     @PostMapping("/users")
     public @ResponseBody
-    User addUser(@RequestParam String username, @RequestParam String password) {
+    User addUser(@RequestBody JsonNode json) {
+        String username = json.findValue("name").asText();
+        String password = json.findValue("password").asText();
         User user = new User(username, password);
         User dbUser = userRepository.save(user);
         return dbUser;
